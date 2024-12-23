@@ -80,20 +80,25 @@ gdi32.lib Comctl32.lib Shell32.lib user32.lib advapi32.lib ws2_32.lib shlwapi.li
 )
 
 add_library(${TARGET_NAME} SHARED ${OpenSC_SOURCES} ${OpenSC_HEADERS})
+
+target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
+target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src/libopensc)
+target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src/scconf)
+
 set_target_properties(${TARGET_NAME} PROPERTIES
     OUTPUT_NAME ${TARGET_NAME}
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
-target_include_directories(${TARGET_NAME}_a PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../common)
-
 add_library(${TARGET_NAME}_a STATIC ${OpenSC_SOURCES} ${OpenSC_HEADERS})
+
+target_include_directories(${TARGET_NAME}_a PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
 
 target_link_options(${TARGET_NAME} PRIVATE "/DELAYLOAD:bcrypt.dll")
 
 # Generate the .def file
-set(EXPORTS_FILE ${CMAKE_CURRENT_SOURCE_DIR}/src/minidriver/minidriver.exports)
+set(EXPORTS_FILE ${CMAKE_CURRENT_SOURCE_DIR}/libopensc.exports)
 set(DEF_FILE ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.def)
 add_custom_command(
     OUTPUT ${DEF_FILE}
@@ -109,8 +114,6 @@ add_custom_command(
 # Link the target with the .def file and libraries
 target_sources(${TARGET_NAME} PRIVATE ${DEF_FILE})
 set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "/def:${DEF_FILE}")
-
-target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../common)
 
 
 target_link_libraries(${TARGET_NAME} PRIVATE ${Dependencies})

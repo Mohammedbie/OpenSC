@@ -21,9 +21,9 @@ ${CMAKE_CURRENT_SOURCE_DIR}/pkcs15-epass2003.c ${CMAKE_CURRENT_SOURCE_DIR}/pkcs1
 ${CMAKE_CURRENT_SOURCE_DIR}/pkcs15-isoApplet.c ${CMAKE_CURRENT_SOURCE_DIR}/pkcs15-gids.c
 )
 
-target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../common)
-
 add_library(${TARGET_NAME} STATIC ${Pkcs15Init_HEADERS} ${Pkcs15Init_SOURCES})
+
+target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
 
 target_include_directories(${TARGET_NAME} PUBLIC "C:/Program Files (x86)/Windows Kits/10/Cryptographic Provider Development Kit/Include" ${CMAKE_CURRENT_SOURCE_DIR}/src)
 

@@ -41,11 +41,11 @@ ${CMAKE_BIN_DIR}/src/common/common.lib
 gdi32.lib advapi32.lib shlwapi.lib
 )
 
-target_include_directories(${TARGET_NAME1} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../common)
-target_include_directories(${TARGET_NAME2} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../common)
-
 add_library(${TARGET_NAME1} SHARED ${OPENSC_PKCS11_HEADERS} ${OPENSC_PKCS11_SOURCES})
 add_library(${TARGET_NAME2} SHARED ${PKCS11_SPY_HEADERS} ${PKCS11_SPY_SOURCES})
+
+target_include_directories(${TARGET_NAME1} PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
+target_include_directories(${TARGET_NAME2} PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
 
 target_include_directories(${TARGET_NAME} PUBLIC "C:/Program Files (x86)/Windows Kits/10/Cryptographic Provider Development Kit/Include" ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
