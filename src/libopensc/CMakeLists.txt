@@ -3,13 +3,14 @@ cmake_minimum_required(VERSION 3.20)
 project(OpenSC LANGUAGES CXX C)
 
 # Set the output target name
-set(TARGET_NAME OpenSC)
+set(OPENSC_TARGET OpenSC)
+set(OPENSC_A_TARGET OpenSC_a)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(OpenSC_HEADERS ${CMAKE_SOURCE_DIR}/config.h)
-set(OpenSC_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/sc.c ${CMAKE_CURRENT_SOURCE_DIR}/ctx.c ${CMAKE_CURRENT_SOURCE_DIR}/log.c
+set(OPENSC_TARGET_HEADERS ${CMAKE_SOURCE_DIR}/config.h)
+set(OPENSC_TARGET_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/sc.c ${CMAKE_CURRENT_SOURCE_DIR}/ctx.c ${CMAKE_CURRENT_SOURCE_DIR}/log.c
 ${CMAKE_CURRENT_SOURCE_DIR}/errors.c ${CMAKE_CURRENT_SOURCE_DIR}/asn1.c ${CMAKE_CURRENT_SOURCE_DIR}/base64.c
 ${CMAKE_CURRENT_SOURCE_DIR}/sec.c ${CMAKE_CURRENT_SOURCE_DIR}/card.c ${CMAKE_CURRENT_SOURCE_DIR}/iso7816.c 
 ${CMAKE_CURRENT_SOURCE_DIR}/dir.c ${CMAKE_CURRENT_SOURCE_DIR}/ef-atr.c ${CMAKE_CURRENT_SOURCE_DIR}/ef-gdo.c 
@@ -79,30 +80,28 @@ $(CMAKE_BINARY_DIR)/src/pkcs15init/pkcs15init.lib
 gdi32.lib Comctl32.lib Shell32.lib user32.lib advapi32.lib ws2_32.lib shlwapi.lib
 )
 
-add_library(${TARGET_NAME} SHARED ${OpenSC_SOURCES} ${OpenSC_HEADERS})
+add_library(${OPENSC_TARGET} SHARED ${OPENSC_TARGET_SOURCES} ${OPENSC_TARGET_HEADERS})
 
-target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
-target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src/libopensc)
-target_include_directories(${TARGET_NAME} PUBLIC ${CMAKE_SOURCE_DIR}/src/scconf)
+target_include_directories(${OPENSC_TARGET} PUBLIC ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src)
 
-set_target_properties(${TARGET_NAME} PROPERTIES
-    OUTPUT_NAME ${TARGET_NAME}
+set_target_properties(${OPENSC_TARGET} PROPERTIES
+    OUTPUT_NAME ${OPENSC_TARGET}
     ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
-add_library(${TARGET_NAME}_a STATIC ${OpenSC_SOURCES} ${OpenSC_HEADERS})
+add_library(${OPENSC_A_TARGET} STATIC ${OPENSC_TARGET_SOURCES} ${OPENSC_TARGET_HEADERS})
 
-target_include_directories(${TARGET_NAME}_a PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
+target_include_directories(${OPENSC_A_TARGET} PUBLIC ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src)
 
-target_link_options(${TARGET_NAME} PRIVATE "/DELAYLOAD:bcrypt.dll")
+target_link_options(${OPENSC_TARGET} PRIVATE "/DELAYLOAD:bcrypt.dll")
 
 # Generate the .def file
-set(EXPORTS_FILE ${CMAKE_CURRENT_SOURCE_DIR}/libopensc.exports)
-set(DEF_FILE ${CMAKE_CURRENT_BINARY_DIR}/${TARGET_NAME}.def)
+set(EXPORTS_FILE ${CMAKE_SOURCE_DIR}/src/libopensc/libopensc.exports)
+set(DEF_FILE ${CMAKE_CURRENT_BINARY_DIR}/${OPENSC_TARGET}.def)
 add_custom_command(
     OUTPUT ${DEF_FILE}
-    COMMAND echo LIBRARY ${TARGET_NAME} > ${DEF_FILE}
+    COMMAND echo LIBRARY ${OPENSC_TARGET} > ${DEF_FILE}
     COMMAND echo EXPORTS >> ${DEF_FILE}
     COMMAND type ${EXPORTS_FILE} >> ${DEF_FILE}
     DEPENDS ${EXPORTS_FILE}
@@ -112,15 +111,15 @@ add_custom_command(
 
 
 # Link the target with the .def file and libraries
-target_sources(${TARGET_NAME} PRIVATE ${DEF_FILE})
-set_target_properties(${TARGET_NAME} PROPERTIES LINK_FLAGS "/def:${DEF_FILE}")
+target_sources(${OPENSC_TARGET} PRIVATE ${DEF_FILE})
+set_target_properties(${OPENSC_TARGET} PROPERTIES LINK_FLAGS "/def:${DEF_FILE}")
 
 
-target_link_libraries(${TARGET_NAME} PRIVATE ${Dependencies})
+target_link_libraries(${OPENSC_TARGET} PRIVATE ${Dependencies})
 
 # Handle manifest embedding
 add_custom_command(
-    TARGET ${TARGET_NAME} POST_BUILD
-    COMMAND if EXIST ${CMAKE_CURRENT_SOURCE_DIR}/src/libopensc/opensc.dll.manifest mt -manifest ${CMAKE_CURRENT_SOURCE_DIR}/src/libopensc/opensc.dll.manifest -outputresource:${TARGET_NAME};
+    TARGET ${OPENSC_TARGET} POST_BUILD
+    COMMAND if EXIST ${CMAKE_CURRENT_SOURCE_DIR}/src/libopensc/opensc.dll.manifest mt -manifest ${CMAKE_CURRENT_SOURCE_DIR}/src/libopensc/opensc.dll.manifest -outputresource:${OPENSC_TARGET};
     COMMENT "Embedding manifest file into DLL"
 )

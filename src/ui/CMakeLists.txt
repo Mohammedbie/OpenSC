@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.20)
 project(UI LANGUAGES CXX C)
 
 # Set the output target name
-set(TARGET_NAME1 Strings)
-set(TARGET_NAME2 Notify)
+set(STRINGS_TARGET Strings)
+set(NOTIFY_TARGET Notify)
 
 
 set(CMAKE_CXX_STANDARD 17)
@@ -16,10 +16,10 @@ set(Strings_SOURCES ${CMAKE_SOURCE_DIR}/src/ui/strings.c)
 set(Notify_HEADERS ${CMAKE_SOURCE_DIR}/config.h)
 set(Notify_SOURCES ${CMAKE_SOURCE_DIR}/src/ui/notify.c)
 
-add_library(${TARGET_NAME1} STATIC ${Strings_HEADERS} ${Strings_SOURCES})
-add_library(${TARGET_NAME2} STATIC ${Notify_HEADERS} ${Notify_SOURCES})
+add_library(${STRINGS_TARGET} STATIC ${Strings_HEADERS} ${Strings_SOURCES})
+add_library(${NOTIFY_TARGET} STATIC ${Notify_HEADERS} ${Notify_SOURCES})
 
-target_include_directories(${TARGET_NAME1} PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
-target_include_directories(${TARGET_NAME1} PUBLIC ${CMAKE_SOURCE_DIR}/src/libopensc)
+target_include_directories(${STRINGS_TARGET} PUBLIC ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(${NOTIFY_TARGET} PUBLIC ${CMAKE_SOURCE_DIR}/src)
 
-install(TARGETS ${TARGET_NAME1} ${TARGET_NAME2} DESTINATION ${CMAKE_BINARY_DIR}/lib)
+install(TARGETS ${STRINGS_TARGET} ${NOTIFY_TARGET} DESTINATION ${CMAKE_BINARY_DIR}/lib)

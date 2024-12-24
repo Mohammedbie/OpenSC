@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.20)
 project(Scconf LANGUAGES CXX C)
 
 # Set the output target name
-set(TARGET_NAME Scconf)
+set(SCCONF_TARGET Scconf)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -27,9 +27,10 @@ set(Scconf_HEADERS ${CMAKE_SOURCE_DIR}/config.h)
 set(Scconf_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/scconf.c ${CMAKE_CURRENT_SOURCE_DIR}/parse.c 
 ${CMAKE_CURRENT_SOURCE_DIR}/write.c ${CMAKE_CURRENT_SOURCE_DIR}/sclex.c)
 
-add_library(${TARGET_NAME} STATIC ${MiniDriver_SOURCES} ${MiniDriver_HEADERS} ${GENERATED_FILE})
+add_library(${SCCONF_TARGET} STATIC ${MiniDriver_SOURCES} ${MiniDriver_HEADERS} ${GENERATED_FILE})
 
-target_include_directories(${TARGET_NAME} PUBLIC "C:/Program Files (x86)/Windows Kits/10/Cryptographic Provider Development Kit/Include" ${CMAKE_CURRENT_SOURCE_DIR}/src)
+target_include_directories(${SCCONF_TARGET} PUBLIC ${CMAKE_SOURCE_DIR}/src/scconf)
+target_include_directories(${SCCONF_TARGET} PUBLIC "C:/Program Files (x86)/Windows Kits/10/Cryptographic Provider Development Kit/Include" ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 
-install(TARGETS ${TARGET_NAME} DESTINATION ${CMAKE_BINARY_DIR}/lib)
+install(TARGETS ${SCCONF_TARGET} DESTINATION ${CMAKE_BINARY_DIR}/lib)
