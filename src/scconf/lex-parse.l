@@ -29,6 +29,10 @@
 
 static scconf_parser *parser;
 
+int yywrap() {
+    return 1; // Signals EOF
+}
+
 %}
 
 %option noyywrap
@@ -44,7 +48,14 @@ static scconf_parser *parser;
 
 [,{}=;]		scconf_parse_token(parser, TOKEN_TYPE_PUNCT, yytext);
 
-\"[^\"\n\r]*\r*[\"\n] scconf_parse_token(parser, TOKEN_TYPE_STRING, yytext);
+\"([^\"\n\r]*\r*[\"\n]|$) {
+    if (yytext[strlen(yytext) - 1] != '"') {
+        fprintf(stderr, "Unclosed string: %s\n", yytext);
+        exit(1);
+    }
+    scconf_parse_token(parser, TOKEN_TYPE_STRING, yytext);
+}
+
 
 [^;, \t\r\n]+  	scconf_parse_token(parser, TOKEN_TYPE_STRING, yytext);
 
@@ -86,7 +97,9 @@ int scconf_lex_parse(scconf_parser *p, const char *filename)
 
 int scconf_lex_parse_string(scconf_parser *p, const char *conf_string)
 {
-	yy_scan_string(conf_string);
+	YY_BUFFER_STATE bs = yy_scan_string(conf_string);
 	do_lex(p);
+	yy_delete_buffer(bs);
+
 	return 1;
 }
