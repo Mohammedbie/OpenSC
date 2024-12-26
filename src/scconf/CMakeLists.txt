@@ -17,7 +17,7 @@ set(GENERATED_FILE ${CMAKE_CURRENT_BINARY_DIR}/lex-parse.c)
 # Define a custom command to process the .l file
 add_custom_command(
     OUTPUT ${GENERATED_FILE}
-    COMMAND flex -o${GENERATED_FILE} ${CMAKE_CURRENT_SOURCE_DIR}/${LEX_FILE}
+    COMMAND flex -o${GENERATED_FILE} ${CMAKE_SOURCE_DIR}/src/scconf/${LEX_FILE}
     MAIN_DEPENDENCY ${LEX_FILE}
     COMMENT "Generating C source from Lex file ${LEX_FILE}"
 )
@@ -29,7 +29,7 @@ ${CMAKE_CURRENT_SOURCE_DIR}/write.c ${CMAKE_CURRENT_SOURCE_DIR}/sclex.c)
 
 add_library(${SCCONF_TARGET} STATIC ${MiniDriver_SOURCES} ${MiniDriver_HEADERS} ${GENERATED_FILE})
 
-target_include_directories(${SCCONF_TARGET} PUBLIC ${CMAKE_SOURCE_DIR}/src/scconf)
+target_include_directories(${SCCONF_TARGET} PUBLIC ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src)
 target_include_directories(${SCCONF_TARGET} PUBLIC "C:/Program Files (x86)/Windows Kits/10/Cryptographic Provider Development Kit/Include" ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 

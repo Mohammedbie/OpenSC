@@ -21,5 +21,8 @@ ${CMAKE_SOURCE_DIR}/src/common/compat_strlcpy.c ${CMAKE_SOURCE_DIR}/src/common/c
 
 
 add_library(${COMMON_TARGET} STATIC ${Common_HEADERS} ${Common_SOURCES})
+target_include_directories(${COMMON_TARGET} PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
+
 add_library(${SCDL_TARGET} STATIC ${SCDL_TARGET_HEADERS} ${SCDL_TARGET_SOURCES})
+target_include_directories(${SCDL_TARGET} PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
 

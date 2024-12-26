@@ -69,14 +69,14 @@ ${CMAKE_CURRENT_SOURCE_DIR}/compression.c ${CMAKE_CURRENT_SOURCE_DIR}/sm.c ${CMA
 #$(CMAKE_SOURCE_DIR)/win32versioninfo.res
 )
 
-set(Dependencies $(CMAKE_BINARY_DIR)/src/scconf/scconf.lib 
-$(CMAKE_BINARY_DIR)/src/common/common.lib 
-$(CMAKE_BINARY_DIR)/src/common/libscdl.lib 
-$(CMAKE_BINARY_DIR)/src/ui/strings.lib 
-$(CMAKE_BINARY_DIR)/src/ui/notify.lib 
-$(CMAKE_BINARY_DIR)/src/sm/libsmiso.lib 
-$(CMAKE_BINARY_DIR)/src/sm/libsmeac.lib 
-$(CMAKE_BINARY_DIR)/src/pkcs15init/pkcs15init.lib
+set(Dependencies Scconf
+Common 
+Libscdl
+Strings
+Notify
+Libsmiso 
+Libsmeac
+Pkcs15Init
 gdi32.lib Comctl32.lib Shell32.lib user32.lib advapi32.lib ws2_32.lib shlwapi.lib
 )
 
