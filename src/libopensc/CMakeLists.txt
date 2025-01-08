@@ -80,7 +80,7 @@ Pkcs15Init
 gdi32.lib Comctl32.lib Shell32.lib user32.lib advapi32.lib ws2_32.lib shlwapi.lib
 )
 
-add_library(${OPENSC_TARGET} SHARED ${OPENSC_TARGET_SOURCES} ${OPENSC_TARGET_HEADERS})
+add_library(${OPENSC_TARGET} SHARED ${OPENSC_TARGET_HEADERS} ${OPENSC_TARGET_SOURCES})
 
 target_include_directories(${OPENSC_TARGET} PUBLIC ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src)
 
@@ -90,7 +90,9 @@ set_target_properties(${OPENSC_TARGET} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
 )
 
-add_library(${OPENSC_A_TARGET} STATIC ${OPENSC_TARGET_SOURCES} ${OPENSC_TARGET_HEADERS})
+add_library(${OPENSC_A_TARGET} STATIC ${OPENSC_TARGET_HEADERS} ${OPENSC_TARGET_SOURCES})
+
+add_compile_definitions(HAVE_CONFIG_H=1 _WINSOCKAPI_=1)
 
 target_include_directories(${OPENSC_A_TARGET} PUBLIC ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src)
 

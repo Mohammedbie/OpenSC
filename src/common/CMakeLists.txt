@@ -5,9 +5,13 @@ project(Common LANGUAGES CXX C)
 # Set the output target name
 set(COMMON_TARGET Common)
 set(SCDL_TARGET Libscdl)
+set(PKCS11_TARGET Libpkcs11)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(PKCS11_TARGET_HEADERS ${CMAKE_SOURCE_DIR}/config.h)
+set(PKCS11_TARGET_SOURCES ${CMAKE_SOURCE_DIR}/src/common/libpkcs11.c)
 
 set(SCDL_TARGET_HEADERS ${CMAKE_SOURCE_DIR}/config.h ${CMAKE_SOURCE_DIR}/src/common/libscdl.h)
 set(SCDL_TARGET_SOURCES ${CMAKE_SOURCE_DIR}/src/common/libscdl.c)
@@ -25,4 +29,7 @@ target_include_directories(${COMMON_TARGET} PUBLIC ${CMAKE_SOURCE_DIR}/src/commo
 
 add_library(${SCDL_TARGET} STATIC ${SCDL_TARGET_HEADERS} ${SCDL_TARGET_SOURCES})
 target_include_directories(${SCDL_TARGET} PUBLIC ${CMAKE_SOURCE_DIR}/src/common)
+
+add_library(${PKCS11_TARGET} STATIC ${PKCS11_TARGET_HEADERS} ${PKCS11_TARGET_SOURCES})
+target_include_directories(${PKCS11_TARGET} PUBLIC ${CMAKE_SOURCE_DIR}/src ${CMAKE_SOURCE_DIR}/src/common)
 

@@ -25,20 +25,19 @@ set(PKCS11_SPY_TARGET_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/pkcs11-spy.c ${CMAKE_C
 # ${CMAKE_CURRENT_SOURCE_DIR}/versioninfo-pkcs11-spy.res
 )
 
-set(OPENSC_PKCS11_TARGET_DEPENDENCIES Common 
-OpenSC_a
+set(OPENSC_PKCS11_TARGET_DEPENDENCIES OpenSC_a
+Pkcs15Init
 Scconf
+Common
 Libscdl
 Strings
 Notify
 Libsmiso 
 Libsmeac
-Pkcs15Init
 gdi32.lib Comctl32.lib Shell32.lib user32.lib advapi32.lib ws2_32.lib Shell32.lib Comctl32.lib shlwapi.lib
 )
 
-set(PKCS11_SPY_TARGET_DEPENDENCIES Common
-Libscdl opensc-pkcs11
+set(PKCS11_SPY_TARGET_DEPENDENCIES Libpkcs11 Libscdl Common
 gdi32.lib advapi32.lib shlwapi.lib
 )
 

@@ -27,7 +27,7 @@ set(Scconf_HEADERS ${CMAKE_SOURCE_DIR}/config.h)
 set(Scconf_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/scconf.c ${CMAKE_CURRENT_SOURCE_DIR}/parse.c 
 ${CMAKE_CURRENT_SOURCE_DIR}/write.c ${CMAKE_CURRENT_SOURCE_DIR}/sclex.c)
 
-add_library(${SCCONF_TARGET} STATIC ${MiniDriver_SOURCES} ${MiniDriver_HEADERS} ${GENERATED_FILE})
+add_library(${SCCONF_TARGET} STATIC ${Scconf_HEADERS} ${Scconf_SOURCES})
 
 target_include_directories(${SCCONF_TARGET} PUBLIC ${CMAKE_SOURCE_DIR} ${CMAKE_SOURCE_DIR}/src)
 target_include_directories(${SCCONF_TARGET} PUBLIC "C:/Program Files (x86)/Windows Kits/10/Cryptographic Provider Development Kit/Include" ${CMAKE_CURRENT_SOURCE_DIR}/src)
